@@ -65,10 +65,6 @@ $(SERVER_TARGET): $(SERVER_OBJS) $(ENET_LIB) | $(TARGET_DIR)
 game: $(GAME_TARGET)
 server: $(SERVER_TARGET)
 
-
-run: game
-	./$(GAME_TARGET)
-
 clean:
 	rm -rf $(TARGET_DIR)
 	cd $(RAYLIB_BUILD_DIR) && make clean || true
