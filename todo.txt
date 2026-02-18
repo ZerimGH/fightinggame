@@ -1,5 +1,5 @@
 TODO:
-  - LAN hosting
+  - LAN hosting (https://github.com/cxong/ENetLANChatServer.git)
   - Game UI: 
     - Server screen
       - hosting (lan, localhost)
