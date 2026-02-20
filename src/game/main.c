@@ -1,9 +1,12 @@
 #include "def.h"
 #include "game.h"
 #include <stdio.h>
-#include <raylib.h>
+#include "raylib/raylib.h"
 
 int main(void) {
+  InitWindow(512, 288, "fightinggame");
+  SetTargetFPS(FRAMERATE);
+
   Game game;
   if(game_init(&game)) {
     PERROR("Failed to initialize game.\n");
@@ -16,5 +19,6 @@ int main(void) {
   }
 
   game_close(&game);
+
   return 0;
 }

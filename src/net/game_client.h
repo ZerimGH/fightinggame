@@ -5,7 +5,6 @@
 #include "shared.h"
 #include "packet.h"
 #include <stddef.h>
-#include <enet/enet.h>
 
 typedef struct {
   uint64_t inputs[MAX_ROLLBACK];
@@ -13,8 +12,8 @@ typedef struct {
 } InputHistory;
 
 typedef struct {
-  ENetHost *host;
-  ENetPeer *peer;  
+  void *host;
+  void *peer;  
 
   InputHistory inputs[MAX_PLAYERS];
   int started;

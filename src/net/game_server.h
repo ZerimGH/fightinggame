@@ -2,7 +2,6 @@
 
 #define GAME_SERVER_H
 
-#include <enet/enet.h>
 #include <stdint.h>
 #include <stddef.h>
 #include "shared.h"
@@ -12,11 +11,11 @@ typedef struct {
   uint8_t player_id;
   uint64_t last_frame_no;
   uint64_t sent[MAX_PLAYERS];
-  ENetPeer *peer;
+  void *peer;
 } Player;
 
 typedef struct {
-  ENetHost *host;
+  void *host;
   Player players[MAX_PLAYERS];
   size_t player_count;
   int running;

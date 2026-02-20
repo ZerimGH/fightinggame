@@ -3,7 +3,7 @@
 #define PACKET_H
 
 #include <stdint.h>
-#include <enet/enet.h>
+#include <stddef.h>
 
 #define PACKET_DATA_SIZE 255
 
@@ -38,6 +38,6 @@ typedef struct {
   uint8_t num_players;
 } __attribute__((packed)) StartPacket;
 
-void send_packet(ENetPeer *peer, uint8_t type, void *data, size_t data_size);
+void send_packet(void *peer, uint8_t type, void *data, size_t data_size);
 
 #endif // PACKET_H

@@ -1,8 +1,9 @@
 #include "packet.h"
 #include <stddef.h>
 #include <string.h>
+#include "enet/enet.h"
 
-void send_packet(ENetPeer *peer, uint8_t type, void *data, size_t data_size) {
+void send_packet(void *peer, uint8_t type, void *data, size_t data_size) {
   Packet p;
   p.type = type;
   memset(p.data, 0, PACKET_DATA_SIZE);

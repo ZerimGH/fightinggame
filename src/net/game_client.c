@@ -1,5 +1,6 @@
 #include "game_client.h"
 #include "def.h"
+#include "enet/enet.h"
 #include <stdio.h>
 
 int game_client_init(GameClient *gc, char *address, unsigned long port) {

@@ -2,7 +2,7 @@
 
 #define SPRITE_SHEET_H
 
-#include <raylib.h>
+#include "raylib/raylib.h"
 
 typedef struct {
   Texture2D texture;

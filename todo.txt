@@ -7,6 +7,5 @@ TODO:
     - Waiting for game to start screen
 
   - Variable sized packets instead of hard coded 256 bytes (lots of wasted bytes rn)
-  = Compiling for windows (probably only gonna do cross compiling with mingw gcc)
   - Animations and player states
   - Gameplay

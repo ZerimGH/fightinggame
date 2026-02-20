@@ -2,6 +2,7 @@
 #include "def.h"
 #include "packet.h"
 #include "shared.h"
+#include "enet/enet.h"
 #include <stdio.h>
 
 // TODO: Like port and address in args
@@ -21,7 +22,7 @@ int game_server_init(GameServer *gs) {
   // enet_address_set_host(&address, "");
   address.port = PORT;
 
-  gs->host = enet_host_create(&address, MAX_PLAYERS, 0, 0, 0);
+  gs->host = (void *)enet_host_create(&address, MAX_PLAYERS, 0, 0, 0);
   if(!gs->host) {
     PERROR("Failed to create server host.\n");
     enet_deinitialize();
@@ -51,8 +52,9 @@ static void game_server_handle_connect(GameServer *gs, ENetEvent event) {
 
   Player *p = &gs->players[gs->player_count];
   p->connected = 1;
-  p->peer = event.peer;
-  p->peer->data = (void *)p;
+  ENetPeer *peer = event.peer;
+  peer->data = (void *)p;
+  p->peer = (void *)event.peer;
   gs->player_count++;
 
   // Send player id to the client
@@ -131,7 +133,7 @@ void game_server_process(GameServer *gs) {
   if(!gs || !gs->host) return;
   if(!gs->running) return;
   ENetEvent event;
-  while(enet_host_service(gs->host, &event, POLL_MS)) {
+  while(enet_host_service((ENetHost *)gs->host, &event, POLL_MS)) {
     switch(event.type) {
       // A new client connection
       case ENET_EVENT_TYPE_CONNECT:
@@ -160,14 +162,14 @@ void game_server_close(GameServer *gs) {
     Player *p = &gs->players[i];
     if (p->connected && p->peer) {
       enet_peer_disconnect(p->peer, 0);
-      enet_host_flush(gs->host);
+      enet_host_flush((ENetHost *)gs->host);
       p->connected = 0;
       p->peer = NULL;
     }
   }
 
   // Destroy server
-  enet_host_destroy(gs->host);
+  enet_host_destroy((ENetHost *)gs->host);
   gs->host = NULL;
 
   enet_deinitialize();

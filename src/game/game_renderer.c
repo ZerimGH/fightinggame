@@ -2,17 +2,13 @@
 #include "assets.h"
 #include "shared.h"
 #include "def.h"
-#include <raylib.h>
 #include <stdio.h>
 
 int game_renderer_init(GameRenderer *gr) {
   if(!gr) return 1;
-  InitWindow(512, 288, "fightinggame");
-  SetTargetFPS(FRAMERATE);
 
   if(ssm_init(&gr->ssm)) {
     PERROR("Failed to initialize sprite sheet manager.\n");
-    CloseWindow();
     return 1;
   }
 
@@ -20,7 +16,6 @@ int game_renderer_init(GameRenderer *gr) {
   if(gr->player_idle == -1) {
     PERROR("Failed to load a spritesheet.\n");
     ssm_deinit(&gr->ssm);
-    CloseWindow();
     return 1;
   }
 
