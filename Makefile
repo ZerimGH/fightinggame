@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -pedantic -MMD -MP
 
 LDFLAGS_LINUX = -Lextern/lib/linux -lraylib -lenet -lm -ldl -lGL -pthread
-LDFLAGS_WIN = -Lextern/lib/win -lraylib -lenet -lm -lws2_32 -lgdi32 -lopengl32 -lwinmm -pthread
+LDFLAGS_WIN = -Lextern/lib/win -lraylib -lenet -lm -lws2_32 -lgdi32 -lopengl32 -lwinmm -pthread -mwindows
 
 TARGET_DIR = build
 INCLUDES = -Isrc -Isrc/net -Isrc/game -Iextern/include
@@ -49,7 +49,7 @@ $(OBJ_DIR_LINUX)/%.o: %.c | $(OBJ_DIR_LINUX)
 
 $(OBJ_DIR_WIN)/%.o: %.c | $(OBJ_DIR_WIN)
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(CFLAGS_WIN) $(INCLUDES) -c $< -o $@
 
 $(TARGET_DIR):
 	mkdir -p $(TARGET_DIR)
