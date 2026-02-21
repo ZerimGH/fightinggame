@@ -6,14 +6,17 @@
 #include "packet.h"
 #include <stddef.h>
 
+typedef struct _ENetHost ENetHost;
+typedef struct _ENetPeer ENetPeer;
+
 typedef struct {
   uint64_t inputs[MAX_ROLLBACK];
   uint64_t frames[MAX_ROLLBACK];
 } InputHistory;
 
 typedef struct {
-  void *host;
-  void *peer;  
+  ENetHost *host;
+  ENetPeer *peer;  
 
   InputHistory inputs[MAX_PLAYERS];
   int started;

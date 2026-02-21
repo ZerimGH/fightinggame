@@ -1,8 +1,6 @@
 #ifndef DEF_H
 #define DEF_H
 
-// #define LOGS // Comment / uncomment to enable or disable logs
-
 #ifdef LOGS
 
 #define PINFO(fmt, ...) fprintf(stdout, "(%s): " fmt, __func__, ##__VA_ARGS__)

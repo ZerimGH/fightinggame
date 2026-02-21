@@ -6,16 +6,19 @@
 #include <stddef.h>
 #include "shared.h"
 
+typedef struct _ENetHost ENetHost;
+typedef struct _ENetPeer ENetPeer;
+
 typedef struct {
   int connected;
   uint8_t player_id;
   uint64_t last_frame_no;
   uint64_t sent[MAX_PLAYERS];
-  void *peer;
+  ENetPeer*peer;
 } Player;
 
 typedef struct {
-  void *host;
+  ENetHost *host;
   Player players[MAX_PLAYERS];
   size_t player_count;
   int running;

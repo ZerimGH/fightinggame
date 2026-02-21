@@ -1,4 +1,5 @@
 #include "game_server.h"
+#define LOGS
 #include "def.h"
 #include "packet.h"
 #include "shared.h"
@@ -22,13 +23,18 @@ int game_server_init(GameServer *gs) {
   // enet_address_set_host(&address, "");
   address.port = PORT;
 
-  gs->host = (void *)enet_host_create(&address, MAX_PLAYERS, 0, 0, 0);
+  gs->host = enet_host_create(&address, MAX_PLAYERS, 0, 0, 0);
   if(!gs->host) {
     PERROR("Failed to create server host.\n");
     enet_deinitialize();
     return 1;
   }
-  PINFO("Created server host at %x:%u\n", gs->host->address.host, gs->host->address.port);
+
+  char ip[64];
+  enet_address_get_host_ip(&gs->host->address, ip, sizeof(ip));
+  PINFO("Created server host at %s:%u\n",
+      ip,
+      gs->host->address.port);
 
   // Initialize player list
   gs->player_count = 0;
@@ -54,7 +60,7 @@ static void game_server_handle_connect(GameServer *gs, ENetEvent event) {
   p->connected = 1;
   ENetPeer *peer = event.peer;
   peer->data = (void *)p;
-  p->peer = (void *)event.peer;
+  p->peer = event.peer;
   gs->player_count++;
 
   // Send player id to the client
@@ -133,22 +139,22 @@ void game_server_process(GameServer *gs) {
   if(!gs || !gs->host) return;
   if(!gs->running) return;
   ENetEvent event;
-  while(enet_host_service((ENetHost *)gs->host, &event, POLL_MS)) {
+  while(enet_host_service(gs->host, &event, POLL_MS)) {
     switch(event.type) {
       // A new client connection
       case ENET_EVENT_TYPE_CONNECT:
         game_server_handle_connect(gs, event);
         break;
-      // A client sending data
+        // A client sending data
       case ENET_EVENT_TYPE_RECEIVE:
         game_server_handle_receive(gs, event);
         enet_packet_destroy(event.packet);
         break;
-      // A client disconnecting
+        // A client disconnecting
       case ENET_EVENT_TYPE_DISCONNECT:
         game_server_handle_disconnect(gs, event);
         break;
-      // Not sure what this is
+        // Not sure what this is
       case ENET_EVENT_TYPE_NONE: break;
     }
   }
@@ -169,7 +175,7 @@ void game_server_close(GameServer *gs) {
   }
 
   // Destroy server
-  enet_host_destroy((ENetHost *)gs->host);
+  enet_host_destroy(gs->host);
   gs->host = NULL;
 
   enet_deinitialize();
