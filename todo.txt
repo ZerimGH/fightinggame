@@ -9,3 +9,18 @@ TODO:
   - Variable sized packets instead of hard coded 256 bytes (lots of wasted bytes rn)
   - Animations and player states
   - Gameplay
+
+Okay so plan:
+  1) Server upgrade:
+      Better packets
+      LAN hosting and joining
+  2) Game upgrade:
+      Server selection
+      Probably hosting from inside the game executable (NEED TO DO FORKS MAYBE) (UNLESS I JUST REWRITE THE SERVER TO LIKE NOT DO ENET INIT AND MAKE THE "CLIENT" UPDATE THE SERVER)
+  3) Game mechanics:
+      Player state machine
+      Yknow like fighting in the fighting game
+  4) Server upgrade more:
+      Custom number of players
+      Maybe like a cryptographical handshake or whatever
+      Just like make it a real server thing
