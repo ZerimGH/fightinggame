@@ -10,6 +10,7 @@ int main(void) {
   Game game;
   if(game_init(&game)) {
     PERROR("Failed to initialize game.\n");
+    CloseWindow();
     return 1;
   }
 
@@ -19,6 +20,7 @@ int main(void) {
   }
 
   game_close(&game);
+  CloseWindow();
 
   return 0;
 }
