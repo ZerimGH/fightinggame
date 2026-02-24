@@ -1,4 +1,5 @@
 #include "game_client.h"
+#define LOGS
 #include "def.h"
 #include "enet/enet.h"
 #include <stdio.h>

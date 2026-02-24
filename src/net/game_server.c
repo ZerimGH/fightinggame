@@ -20,7 +20,6 @@ int game_server_init(GameServer *gs) {
   // Create server host
   ENetAddress address; 
   address.host = HOST;
-  // enet_address_set_host(&address, "");
   address.port = PORT;
 
   gs->host = enet_host_create(&address, MAX_PLAYERS, 0, 0, 0);

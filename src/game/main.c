@@ -17,7 +17,7 @@ int main(void) {
   }
 
   double start_time = GetTime();
-  double next_time = start_time;
+  double next_time = start_time + DT;
 
   int c = 0;
   int lc = c;
