@@ -24,10 +24,10 @@ int sprite_sheet_init(SpriteSheet *ss, const char *ext, unsigned char *data, uns
   return 0;
 }
 
-void sprite_sheet_render(SpriteSheet *ss, float x, float y, float w, float h, unsigned int frame) {
-  if(!ss) return;
+void sprite_sheet_render(SpriteSheet *ss, float x, float y, float w, float h, unsigned int frame, int flip) {
+  if (!ss) return;
   unsigned int num_frames = ss->rows * ss->cols;
-  if(frame >= num_frames) frame = num_frames - 1;
+  frame %= num_frames;
 
   unsigned int sprite_x = (frame % ss->cols) * ss->sprite_width;
   unsigned int sprite_y = (frame / ss->cols) * ss->sprite_height;
@@ -35,7 +35,12 @@ void sprite_sheet_render(SpriteSheet *ss, float x, float y, float w, float h, un
   Rectangle src = {(float)sprite_x, (float)sprite_y, (float)ss->sprite_width, (float)ss->sprite_height};
   Rectangle dest = {x, y, w, h};
 
-  DrawTexturePro(ss->texture, src, dest, (Vector2) {0, 0},  0.0f, WHITE);
+  if(flip) {
+    src.width = -src.width;
+    src.x += ss->sprite_width;
+  }
+
+  DrawTexturePro(ss->texture, src, dest, (Vector2){0, 0}, 0.0f, WHITE);
 }
 
 void sprite_sheet_deinit(SpriteSheet *ss) {

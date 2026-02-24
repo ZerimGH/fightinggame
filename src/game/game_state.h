@@ -8,6 +8,8 @@
 #define PLAYER_W 96 
 #define PLAYER_H 63
 
+#define ANIM_FRAMES 12 
+
 #include <stdint.h>
 #include "shared.h"
 

@@ -24,11 +24,11 @@ static SpriteSheet *ssm_lookup(SpriteSheetManager *ssm, int idx) {
   return &ssm->sheets[idx];
 }
 
-void ssm_render(SpriteSheetManager *ssm, int idx, float x, float y, float w, float h, unsigned int frame) {
+void ssm_render(SpriteSheetManager *ssm, int idx, float x, float y, float w, float h, unsigned int frame, int flip) {
   if(!ssm) return;
   SpriteSheet *ss = ssm_lookup(ssm, idx);
   if(!ss) return;
-  sprite_sheet_render(ss, x, y, w, h, frame);
+  sprite_sheet_render(ss, x, y, w, h, frame, flip);
 }
 
 void ssm_deinit(SpriteSheetManager *ssm) {

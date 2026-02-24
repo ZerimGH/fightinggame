@@ -13,13 +13,22 @@ int game_renderer_init(GameRenderer *gr) {
   }
 
   gr->player_idle = ssm_load(&gr->ssm, ".png", idle_png, idle_png_len, 1, 4);
-  if(gr->player_idle == -1) {
+  gr->player_walk = ssm_load(&gr->ssm, ".png", walk_png, walk_png_len, 1, 3);
+  if(gr->player_idle == -1 || gr->player_walk == -1) {
     PERROR("Failed to load a spritesheet.\n");
     ssm_deinit(&gr->ssm);
     return 1;
   }
 
   return 0;
+}
+
+static int get_anim(GameRenderer *gr, PlayerState ps) {
+  switch(ps) {
+    case PSIdle: return gr->player_idle; 
+    case PSWalk: return gr->player_walk; 
+    default: return gr->player_idle;
+  }
 }
 
 void game_renderer_render_state(GameRenderer *gr, GameState *gs) {
@@ -51,7 +60,6 @@ void game_renderer_render_state(GameRenderer *gr, GameState *gs) {
   scale_x = w_screen_w / (float) WORLD_W;
   scale_y = w_screen_h / (float) WORLD_H;
 
-  // BeginDrawing();
   ClearBackground(GRAY);
 
   DrawRectangle((int)offset_x, (int)offset_y, (int)w_screen_w, (int)w_screen_h, BLACK);
@@ -63,10 +71,8 @@ void game_renderer_render_state(GameRenderer *gr, GameState *gs) {
     ry = p->y * scale_y + offset_y;
     rw = (float)PLAYER_W * scale_x;
     rh = (float)PLAYER_H * scale_y;
-    ssm_render(&gr->ssm, gr->player_idle, rx, ry, rw, rh, 0);
+    ssm_render(&gr->ssm, get_anim(gr, p->state), rx, ry, rw, rh, p->frame / ANIM_FRAMES, p->facing != 1);
   }
-
-  // EndDrawing();
 }
 
 

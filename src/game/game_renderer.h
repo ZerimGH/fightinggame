@@ -8,6 +8,7 @@
 typedef struct {
   SpriteSheetManager ssm;
   int player_idle;
+  int player_walk;
 } GameRenderer;
 
 int game_renderer_init(GameRenderer *gr);

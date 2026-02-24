@@ -112,14 +112,16 @@ static void player_idle_apply_inputs(Player *p, uint64_t inputs) {
   int left = get_bit(inputs, InputLeft);
   int right = get_bit(inputs, InputRight);
 
-  if((left || right) && !(left && right)) player_state_change(p, PSWalk);
+  if((left || right) && !(left && right)) {
+    player_state_change(p, PSWalk);
+    player_walk_apply_inputs(p, inputs);
+  }
 }
 
 static void player_walk_enter(Player *p) {
 }
 
 static void player_walk_exit(Player *p) {
-  p->facing = 0;
 }
 
 static void player_walk_apply_inputs(Player *p, uint64_t inputs) {
