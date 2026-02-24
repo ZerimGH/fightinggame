@@ -22,7 +22,8 @@ typedef struct {
   uint16_t x, y;
 
   PlayerState state;
-  uint8_t frame;
+  uint64_t frames;
+  uint64_t anim_frame;
   int8_t facing;
 } Player;
 

@@ -24,7 +24,7 @@ static void player_walk_apply_inputs(Player *p, uint64_t inputs);
 
 static void player_state_enter(Player *p, PlayerState new) {
   p->state = new;
-  p->frame = 0;
+  p->frames = 0;
 
   switch(new) {
     case PSIdle: player_idle_enter(p); break;
@@ -45,7 +45,8 @@ static void player_state_update(Player *p) {
     case PSWalk: player_walk_update(p); break;
   }
 
-  p->frame++;
+  p->frames++;
+  p->anim_frame = p->frames / ANIM_FRAMES;
 }
 
 static void player_state_apply_inputs(Player *p, uint64_t inputs) {
@@ -74,7 +75,7 @@ void game_state_init(GameState *gs) {
     p->x = spacing * i;
     p->y = WORLD_H - PLAYER_H;
     p->state = PSIdle;
-    p->frame = 0;
+    p->frames = 0;
     p->facing = 1;
 
     gs->inputs[i] = 0;

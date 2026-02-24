@@ -71,7 +71,7 @@ void game_renderer_render_state(GameRenderer *gr, GameState *gs) {
     ry = p->y * scale_y + offset_y;
     rw = (float)PLAYER_W * scale_x;
     rh = (float)PLAYER_H * scale_y;
-    ssm_render(&gr->ssm, get_anim(gr, p->state), rx, ry, rw, rh, p->frame / ANIM_FRAMES, p->facing != 1);
+    ssm_render(&gr->ssm, get_anim(gr, p->state), rx, ry, rw, rh, p->anim_frame, p->facing != 1);
   }
 }
 
