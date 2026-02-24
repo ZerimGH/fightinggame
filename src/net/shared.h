@@ -5,3 +5,4 @@
 #define HOST ENET_HOST_ANY // Server host
 #define PORT 58008 // Server port
 #define MAX_ROLLBACK 8 // The number of inputs history to store
+#define MAX_AHEAD 8 // The maximum number of frames ahead that a stored input can be overwritten by a newer one

@@ -61,12 +61,15 @@ int game_client_init(GameClient *gc, char *address, unsigned long port) {
 
 static void game_client_store_input(GameClient *gc, uint8_t player_id, uint64_t frame_no, uint64_t inputs) {
   InputHistory *ih = &gc->inputs[player_id];
-  if(ih->frames[frame_no % MAX_ROLLBACK] < frame_no) {
-    ih->inputs[frame_no % MAX_ROLLBACK] = inputs;
-    ih->frames[frame_no % MAX_ROLLBACK] = frame_no;
+  uint64_t index = frame_no % MAX_ROLLBACK;
+  uint64_t stored_frame = ih->frames[index];
+
+  if (frame_no <= stored_frame + MAX_AHEAD) {
+    ih->inputs[index] = inputs;
+    ih->frames[index] = frame_no;
     PINFO("Stored inputs %lu for player %d on frame %lu\n", inputs, (int)player_id, frame_no);
   } else {
-    PINFO("Stored frame number %lu was more than %lu, ignoring\n", ih->frames[frame_no % MAX_ROLLBACK], frame_no);
+    PINFO("Frame %lu too far ahead of stored frame %lu, ignoring\n", frame_no, stored_frame);
   }
 }
 
@@ -83,7 +86,7 @@ static void game_client_handle_input(GameClient *gc, ENetEvent event) {
   OtherInputPacket *input = (OtherInputPacket *)&packet->data[0];
   uint8_t id = input->player_id;
   uint64_t frame = input->frame_no;
-  
+
   game_client_store_input(gc, id, frame, input->inputs);
 }
 
@@ -91,7 +94,7 @@ static void game_client_handle_start(GameClient *gc, ENetEvent event) {
   Packet *packet = (Packet *)event.packet->data;
   StartPacket *start_packet = (StartPacket *)&packet->data[0];
   uint8_t num_players = start_packet->num_players;
-  
+
   PINFO("Starting with %d players\n", (int)num_players);
   gc->num_players = num_players;
   gc->started = 1;
@@ -101,7 +104,7 @@ static void game_client_handle_id(GameClient *gc, ENetEvent event) {
   Packet *packet = (Packet *)event.packet->data;
   IdPacket *id_packet = (IdPacket *)&packet->data[0];
   uint8_t id = id_packet->player_id;
-  
+
   gc->player_id = id;
   PINFO("Got player ID %d from server\n", (int)id);
 }
@@ -110,7 +113,7 @@ static void game_client_handle_receive(GameClient *gc, ENetEvent event) {
   // Ensure the packet is the right size
   if(event.packet->dataLength != sizeof(Packet)) {
     PERROR("Invalid packet. Expected size %zu, but got %zu.\n",
-sizeof(Packet), event.packet->dataLength);
+        sizeof(Packet), event.packet->dataLength);
     return;
   }
 
@@ -136,7 +139,7 @@ void game_client_process(GameClient *gc) {
         enet_packet_destroy(event.packet);
         break;
 
-      // Probably need to handle disconnecting and stuff
+        // Probably need to handle disconnecting and stuff
       case ENET_EVENT_TYPE_DISCONNECT:
         gc->connected = 0;
         PINFO("Server disconnected\n");
