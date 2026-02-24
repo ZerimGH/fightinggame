@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#define PACKET_DATA_SIZE 255
+#define PACKET_DATA_SIZE 32 
 
 enum {
   PACKET_INPUT,

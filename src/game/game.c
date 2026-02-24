@@ -112,9 +112,7 @@ void game_update(Game *game) {
 
 void game_render(Game *game) {
   if(!game) return;
-  BeginDrawing();
   game_renderer_render_state(&game->renderer, &game->current);
-  EndDrawing();
 }
 
 void game_close(Game *game) {
