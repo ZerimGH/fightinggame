@@ -7,7 +7,7 @@
 #define DT (1.0 / FRAMERATE)
 
 int main(void) {
-  SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+  SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_ALWAYS_RUN);
   InitWindow(512, 288, "fightinggame");
 
   Game game;
