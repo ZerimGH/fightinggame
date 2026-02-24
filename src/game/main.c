@@ -23,6 +23,7 @@ int main(void) {
   int lc = c;
 
   char debug[128];
+  snprintf(debug, sizeof(debug), "Waiting...");
 
   while(!WindowShouldClose() && game.client.connected) {
     double cur_time = GetTime();
